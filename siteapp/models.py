@@ -9,4 +9,4 @@ class info(models.Model):
     humi_b = models.IntegerField()
     co2_u = models.IntegerField()
     co2_b = models.IntegerField()
-    ischecked = models.IntegerField(max_length = 1)
+    ischecked = models.IntegerField()
