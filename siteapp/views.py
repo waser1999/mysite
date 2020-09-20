@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import info
 
+def index(request):
+    return render(request,"select.html")
+
 # 选中一个数据用于工作
 def choose(request):
     request.encoding = 'utf-8'
@@ -28,7 +31,8 @@ def choose(request):
         'co2_b' : refer.co2_b,
         'ischecked' : refer.ischecked,
     }
-    return HttpResponse(response)
+    return render(request,"select.html")
+    # return render(request,"select.html",response)
 
 # 添加一个数据
 def add(request):
@@ -45,7 +49,8 @@ def add(request):
             ischecked = request.POST.get('ischecked',''),
         )
         new_plan.save()
-    return HttpResponse("Add Successsfully.")
+    return render(request,"add.html")
+    # return render(request,"add.html",response)
 
 # 删除
 def delete(request):
@@ -56,7 +61,8 @@ def delete(request):
             response = 'Delete successfully'
     except:
         response = 'Can not find object.'
-    return HttpResponse(response)
+    return render(request,"delete.html")
+    # return render(request,"delete.html",response)
 
 # 修改
 def modify(request):
@@ -67,8 +73,10 @@ def modify(request):
 
         info.objects.filter(plant = plantName).update(column = num)
         response = 'Update successfully'
-    return HttpResponse(response)
+    return render(request,"update.html")
+    # return render(request,"update.html",response)
 
 # 全部列出        
 def clist(request):
-    return HttpResponse(info.objects.all().order_by('ischecked'))
+    # info.objects.all().order_by('ischecked')
+    return render(request,"list.html")
