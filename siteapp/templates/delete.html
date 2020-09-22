@@ -7,19 +7,21 @@
 
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
-    <div class="container-fluid">
-        <div class="page-header">
-            <h1>选择待删除的方案名称：</h1>
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  请选择
-                  <span class="caret"></span>
-                </button>
-              </div>
-          </div>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label for="exampleInputName2" class="col-sm-2 control-label">选择待删除的方案名称：</label>
+      <div class="col-sm-6">
+        <select class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">删除</button>
     </div>
-</div> <!-- /container -->
-
-<button class="btn btn-default" type="submit">删除</button>
+  </form>
+</div>
 
 {% endblock content %}
