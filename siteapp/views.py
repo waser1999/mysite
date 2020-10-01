@@ -6,9 +6,6 @@ from django.shortcuts import render
 from .models import info
 from django.forms.models import model_to_dict
 
-def index(request):
-    return render(request,"select.html")
-
 # 选中一个数据用于工作
 def choose(request):
     rvalue = info.objects.all()
@@ -58,7 +55,7 @@ def delete(request):
     }
     return render(request,"delete.html",response)
 
-# 修改
+# 更新
 def modify(request):
     rvalue = info.objects.all()
     reply = ''
@@ -68,8 +65,19 @@ def modify(request):
             column = request.POST.get('column','')          #列名
             num = request.POST.get('num','')
 
-            info.objects.filter(plant = plantName).update(column = num)
-            reply = 'Update successfully'
+            if column == 'temp_u':
+                info.objects.filter(plant = plantName).update(temp_u = num)
+            elif column == 'temp_b':
+                info.objects.filter(plant = plantName).update(temp_b = num)
+            elif column == 'humi_u':
+                info.objects.filter(plant = plantName).update(humi_u = num)
+            elif column == 'humi_b':
+                info.objects.filter(plant = plantName).update(humi_b = num)
+            elif column == 'co2_u':
+                info.objects.filter(plant = plantName).update(co2_u = num)
+            elif column == 'co2_b':
+                info.objects.filter(plant = plantName).update(co2_b = num)
+                
     except:
         reply = 'Can not find object.'
     response = {
@@ -80,6 +88,6 @@ def modify(request):
 
 # 全部列出        
 def clist(request):
-    rvalue = info.objects.all()
+    rvalue = info.objects.all().order_by("ischecked").reverse()         # ischecked选中在上的置顶，排序
     response = {'rvalue': rvalue}
     return render(request,"list.html", response)

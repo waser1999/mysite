@@ -7,43 +7,43 @@
 
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
-  <form class="form-horizontal">
+  <form class="form-horizontal" method="POST">
+    {% csrf_token %}
+    <!--csrf_token用来验证-->
     <div class="form-group">
       <label for="exampleInputName2" class="col-sm-2 control-label">选择待修改的方案名称：</label>
       <div class="col-sm-6">
-        <select class="form-control">
+        <select class="form-control" name='plant'>
           {% for plants in rvalue %}
-          <option>{{ plants.plant }}</option>
+          <option value="{{ plants.plant }}">{{ plants.plant }}</option>
           {% endfor %}
         </select>
       </div>
     </div>
-  </form>
-  <form class="form-horizontal">
     <div class="form-group">
       <label for="exampleInputName2" class="col-sm-2 control-label">选择待修改的参数名：</label>
       <div class="col-sm-6">
-        <select class="form-control">
-          <option>植物名称</option>
-          <option>上限温度</option>
-          <option>下限温度</option>
-          <option>上限湿度</option>
-          <option>下限湿度</option>
-          <option>上限二氧化碳浓度</option>
-          <option>下限二氧化碳浓度</option>
+        <select class="form-control" name='column'>
+          <option value='plant'>植物名称</option>
+          <option value='temp_u'>上限温度</option>
+          <option value='temp_b'>下限温度</option>
+          <option value='humi_u'>上限湿度</option>
+          <option value='humi_b'>下限湿度</option>
+          <option value='co2_u'>二氧化碳浓度上限</option>
+          <option value='co2_b'>二氧化碳浓度下限</option>
         </select>
       </div>
     </div>
-  </form>
-  <form class="form-horizontal">
     <div class="form-group">
       <label for="exampleInputName2" class="col-sm-2 control-label">键入新值：</label>
       <div class="col-sm-6">
-        <input type="text" class="form-control col-sm-10" id="exampleInputName2">
+        <input type="text" class="form-control col-sm-10" required name='num' id="exampleInputName2">
       </div>
     </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary col-sm-offset-7">修改</button>
+    </div>
   </form>
-  <button type="submit" class="btn btn-primary col-sm-offset-7">修改</button>
 </div>
 
 {% endblock content %}

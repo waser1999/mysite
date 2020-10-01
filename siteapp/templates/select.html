@@ -7,13 +7,14 @@
 
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
-  <form class="form-horizontal">
+  <form method="POST" class="form-horizontal">
+    {% csrf_token %}
     <div class="form-group">
       <label for="exampleInputName2" class="col-sm-2 control-label">选择拟采用的方案名称：</label>
       <div class="col-sm-6">
-        <select class="form-control">
+        <select class="form-control" name="plant">
         {% for plants in rvalue %}
-          <option>{{ plants.plant }}</option>
+          <option value="{{ plants.plant }}">{{ plants.plant }}</option>
         {% endfor %}
         </select>
       </div>
