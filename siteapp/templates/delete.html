@@ -12,11 +12,9 @@
       <label for="exampleInputName2" class="col-sm-2 control-label">选择待删除的方案名称：</label>
       <div class="col-sm-6">
         <select class="form-control">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
+          {% for plants in rvalue %}
+          <option>{{ plants.plant }}</option>
+          {% endfor %}
         </select>
       </div>
       <button type="submit" class="btn btn-primary">删除</button>
