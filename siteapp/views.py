@@ -22,21 +22,23 @@ def choose(request):
 
 # 添加一个数据
 def add(request):
+    reply = 0
     if request.method == 'POST':
-        # 读取设定数据
+        # 读取设定数据 
         new_plan = info(
-            plantName = request.POST.get('plant',''),
+            plant = request.POST.get('plant',''),
             temp_u = request.POST.get('temp_u',''),
             temp_b = request.POST.get('temp_b',''),
             humi_u = request.POST.get('humi_u',''),
             humi_b = request.POST.get('humi_b',''),
             co2_u = request.POST.get('co2_u',''),
             co2_b = request.POST.get('co2_b',''),
-            ischecked = request.POST.get('ischecked',''),
+            ischecked = 0,
         )
         new_plan.save()
-    return render(request,"add.html")
-    # return render(request,"add.html",response)
+        reply = 1
+    response = { "status": reply }
+    return render(request,"add.html",response)
 
 # 删除
 def delete(request):
