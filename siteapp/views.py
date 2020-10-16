@@ -43,24 +43,18 @@ def add(request):
 # 删除
 def delete(request):
     rvalue = info.objects.all()
-    reply = ''
-    try:
-        if request.method == 'POST':
-            plantName = request.POST.get('plant','')
-            info.objects.filter(plant = plantName).delete()
-            reply = 'Delete successfully'
-    except:
-        reply = 'Can not find object.'
+    if request.method == 'POST':
+        plantName = request.POST.get('plant','')
+        info.objects.filter(plant = plantName).delete()
     response = {
         'rvalue': rvalue,
-        'reply': reply,
     }
     return render(request,"delete.html",response)
 
 # 更新
 def modify(request):
     rvalue = info.objects.all()
-    reply = ''
+    reply = 0
     try:
         if request.method == 'POST':
             plantName = request.POST.get('plant','')
@@ -79,9 +73,10 @@ def modify(request):
                 info.objects.filter(plant = plantName).update(co2_u = num)
             elif column == 'co2_b':
                 info.objects.filter(plant = plantName).update(co2_b = num)
+            reply = 1
                 
     except:
-        reply = 'Can not find object.'
+        pass
     response = {
         'rvalue': rvalue,
         'reply': reply,
