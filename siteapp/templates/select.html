@@ -13,13 +13,22 @@
       <label for="exampleInputName2" class="col-sm-2 control-label">选择拟采用的方案名称：</label>
       <div class="col-sm-6">
         <select class="form-control" name="plant">
-        {% for plants in rvalue %}
+          {% for plants in rvalue %}
           <option value="{{ plants.plant }}">{{ plants.plant }}</option>
-        {% endfor %}
+          {% endfor %}
         </select>
       </div>
       <button type="submit" class="btn btn-primary">配置</button>
     </div>
+    {% if reply %}
+    <div>
+      <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert"
+          aria-label="Close"><span aria-hidden="true">&times;</span>
+        </button>
+        你已配置成功！
+    </div>
+    {% endif %}
   </form>
 </div>
 

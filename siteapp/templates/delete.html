@@ -20,6 +20,15 @@
       </div>
       <button type="submit" class="btn btn-primary">删除</button>
     </div>
+    {% if reply %}
+    <div>
+      <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert"
+          aria-label="Close"><span aria-hidden="true">&times;</span>
+        </button>
+        你已删除成功！
+    </div>
+    {% endif %}
   </form>
 </div>
 

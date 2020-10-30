@@ -8,15 +8,18 @@ from django.forms.models import model_to_dict
 
 # 选中一个数据用于工作
 def choose(request):
-    rvalue = info.objects.all()
+    rvalue = info.objects.all().order_by("ischecked").reverse()
+    reply = 0
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
         # 修改选中标记
         info.objects.all().update(ischecked = 0)
         info.objects.filter(plant = plantName).update(ischecked = 1)
+        reply = 1
     
     response = {
         'rvalue': rvalue,
+        'reply': reply,
     }
     return render(request,"select.html",response)
 
@@ -43,11 +46,14 @@ def add(request):
 # 删除
 def delete(request):
     rvalue = info.objects.all()
+    reply = 0
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
         info.objects.filter(plant = plantName).delete()
+        reply = 1
     response = {
         'rvalue': rvalue,
+        'reply': reply,
     }
     return render(request,"delete.html",response)
 
