@@ -24,7 +24,6 @@
       <label for="exampleInputName2" class="col-sm-2 control-label">选择待修改的参数名：</label>
       <div class="col-sm-6">
         <select class="form-control" name='column'>
-          <option value='plant'>植物名称</option>
           <option value='temp_u'>上限温度</option>
           <option value='temp_b'>下限温度</option>
           <option value='humi_u'>上限湿度</option>
@@ -42,6 +41,23 @@
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary col-sm-offset-7">修改</button>
+    </div>
+    <div>
+      {% if status == 1 %}
+      <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+            aria-hidden="true">&times;</span>
+        </button>
+        你已添加成功！
+      </div>
+      {% elif status == 2 %}
+      <div class="alert alert-warning" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span>
+        </button>
+        <strong>错误。</strong>请检查是否有不合法参数。
+      </div>
+      {% endif %}
     </div>
   </form>
 </div>
