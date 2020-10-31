@@ -20,15 +20,23 @@
       </div>
       <button type="submit" class="btn btn-primary">删除</button>
     </div>
-    {% if status %}
     <div>
+      {% if status == 1 %}
       <div class="alert alert-success" role="alert">
         <button type="button" class="close" data-dismiss="alert"
           aria-label="Close"><span aria-hidden="true">&times;</span>
         </button>
         你已删除成功！
+      </div>
+      {% elif status == 3 %}
+      <div class="alert alert-warning" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span>
+        </button>
+        <strong>错误。</strong>待删除的数据已被配置，无法删除。
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
   </form>
 </div>
 

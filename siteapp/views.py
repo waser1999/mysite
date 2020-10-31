@@ -9,6 +9,7 @@ from django.forms.models import model_to_dict
 # reply == 1，成功；
 # reply == 0，初始值；
 # reply == 2，范围值不符合规范；
+# reply == 3，删除了已经选择的配置。
 
 # 选中一个数据用于工作
 def choose(request):
@@ -63,8 +64,11 @@ def delete(request):
     reply = 0
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
-        info.objects.filter(plant = plantName).delete()
-        reply = 1
+        if info.objects.filter(plant = plantName).get().ischecked == 0:
+            info.objects.filter(plant = plantName).delete()
+            reply = 1
+        else:
+            reply = 3
     response = {
         'rvalue': rvalue,
         'status': reply,
