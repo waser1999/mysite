@@ -1,10 +1,11 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render
 from .models import info
 from django.forms.models import model_to_dict
+from django.core import serializers
 
 # reply == 1，成功；
 # reply == 0，初始值；
@@ -112,3 +113,10 @@ def clist(request):
     rvalue = info.objects.all().order_by("ischecked").reverse()         # ischecked选中在上的置顶，排序
     response = {'rvalue': rvalue}
     return render(request,"list.html", response)
+
+def api(request):
+    rvalue = info.objects.filter(ischecked = 1)
+    response = {
+        'value' : serializers.serialize("json",rvalue),
+    }
+    return JsonResponse(response)
