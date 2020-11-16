@@ -6,14 +6,28 @@ from django.shortcuts import render
 from .models import info
 from django.forms.models import model_to_dict
 from django.core import serializers
+from django.core.exceptions import ValidationError
 
 # reply == 1，成功；
 # reply == 0，初始值；
 # reply == 2，范围值不符合规范；
-# reply == 3，删除了已经选择的配置。
+# reply == 3，删除了已经选择的配置；
+# reply == 4，植物名称重复错误。
 
-# 选中一个数据用于工作
+def is_qualified(**word):
+    """数据校验函数
+    
+    有上下界的词尾b(below)表示下界，u(upper)表示上界
+    """
+    if -50 <= int(word['temp_b']) < int(word['temp_u']) <= 50 \
+    and 0 <= int(word['humi_b']) < int(word['humi_u']) <= 100 \
+    and 0 <= int(word['co2_b']) < int(word['co2_u']) :
+        return 1
+    else:
+        return 0
+
 def choose(request):
+    """选中一个数据用于工作"""
     rvalue = info.objects.all().order_by("ischecked").reverse()
     reply = 0
     if request.method == 'POST':
@@ -29,38 +43,31 @@ def choose(request):
     }
     return render(request,"select.html",response)
 
-# 添加一个数据
 def add(request):
+    """添加一个数据"""
     reply = 0
     if request.method == 'POST':
         # 读取设定数据 
-        plant = request.POST.get('plant',''),
-        temp_u = int(request.POST.get('temp_u','')),
-        temp_b = int(request.POST.get('temp_b','')),
-        humi_u = int(request.POST.get('humi_u','')),
-        humi_b = int(request.POST.get('humi_b','')),
-        co2_u = int(request.POST.get('co2_u','')),
-        co2_b = int(request.POST.get('co2_b','')),
-        if -50 <= temp_b[0] < temp_u[0] <= 50 and 0 <= humi_b[0] < humi_u[0] <= 100 and 0 <= co2_b[0] < co2_u[0] :
-            new_plan = info(
-                plant = plant[0],
-                temp_b = temp_b[0],
-                temp_u = temp_u[0],
-                humi_b = humi_b[0],
-                humi_u = humi_u[0],
-                co2_b = co2_b[0],
-                co2_u = co2_u[0],
-                ischecked = 0,
-            )
-            new_plan.save()
-            reply = 1
-        else:
-            reply = 2
+        try:
+            new_plan = request.POST.dict()
+            new_plan['ischecked'] = 0
+            del new_plan['csrfmiddlewaretoken']
+            for k,v in new_plan.items():
+                if k != 'plant':
+                    new_plan[k] = int(v)
+            if is_qualified(**new_plan) == 0:
+                reply = 2
+            else:
+                info.objects.create(**new_plan)
+                reply = 1
+        except:
+            reply = 4
+        
     response = { "status": reply }
     return render(request,"add.html",response)
 
-# 删除
 def delete(request):
+    """删除数据"""
     rvalue = info.objects.all()
     reply = 0
     if request.method == 'POST':
@@ -76,29 +83,21 @@ def delete(request):
     }
     return render(request,"delete.html",response)
 
-# 更新
 def modify(request):
+    """更新数据"""
     rvalue = info.objects.all()
     reply = 0
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
         column = request.POST.get('column','')        #列名
         num = int(request.POST.get('num',''))
-        
+
         reply = 1
-        i = info.objects.filter(plant = plantName).get()
-        if column == 'temp_u' and i.temp_b < num <= 50:
-            info.objects.filter(plant = plantName).update(temp_u = num)
-        elif column == 'temp_b' and i.temp_u > num >= -50:
-            info.objects.filter(plant = plantName).update(temp_b = num)
-        elif column == 'humi_u' and i.humi_b < num <= 100:
-            info.objects.filter(plant = plantName).update(humi_u = num)
-        elif column == 'humi_b' and i.humi_u > num >= 0:
-            info.objects.filter(plant = plantName).update(humi_b = num)
-        elif column == 'co2_u' and i.co2_b < num:
-            info.objects.filter(plant = plantName).update(co2_u = num)
-        elif column == 'co2_b' and i.co2_u > num >= 0:
-            info.objects.filter(plant = plantName).update(co2_b = num)
+        i = info.objects.filter(plant = plantName).values().get()
+        i[column] = num
+        # 上下界合标判定
+        if is_qualified(**i):
+            info.objects.filter(plant = plantName).update(**i)
         else:
             reply = 2
 
@@ -107,14 +106,16 @@ def modify(request):
         'status': reply,
     }
     return render(request,"update.html",response)
-
-# 全部列出        
+ 
 def clist(request):
-    rvalue = info.objects.all().order_by("ischecked").reverse()         # ischecked选中在上的置顶，排序
+    """全部列出"""
+    # ischecked选中在上的置顶，排序
+    rvalue = info.objects.all().order_by("ischecked").reverse()
     response = {'rvalue': rvalue}
     return render(request,"list.html", response)
 
 def api(request):
+    """api函数实现"""
     rvalue = info.objects.filter(ischecked = 1)
     response = {
         'value' : serializers.serialize("json",rvalue),

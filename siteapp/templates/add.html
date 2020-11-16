@@ -20,11 +20,11 @@
     <div class="form-group">
       <label for="exampleInputName2" class="col-sm-2 control-label">温度下限：</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" required id="exampleInputName2" name="temp_b">
+        <input type="number" class="form-control" required id="exampleInputName2" name="temp_b">
       </div>
       <label for="exampleInputName2" class="col-sm-2 control-label">温度上限：</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" required id="exampleInputName2" name="temp_u">
+        <input type="number" class="form-control" required id="exampleInputName2" name="temp_u">
       </div>
     </div>
     <div>
@@ -33,11 +33,11 @@
     <div class="form-group">
       <label for="exampleInputName2" class="col-sm-2 control-label">湿度下限：</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" required id="exampleInputName2" name="humi_b">
+        <input type="number" class="form-control" required id="exampleInputName2" name="humi_b">
       </div>
       <label for="exampleInputName2" class="col-sm-2 control-label">湿度上限：</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" required id="exampleInputName2" name="humi_u">
+        <input type="number" class="form-control" required id="exampleInputName2" name="humi_u">
       </div>
     </div>
     <div>
@@ -46,11 +46,11 @@
     <div class="form-group">
       <label for="exampleInputName2" class="col-sm-2 control-label">二氧化碳浓度下限：</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" required id="exampleInputName2" name="co2_b">
+        <input type="number" class="form-control" required id="exampleInputName2" name="co2_b">
       </div>
       <label for="exampleInputName2" class="col-sm-2 control-label">二氧化碳浓度上限：</label>
       <div class="col-sm-4">
-        <input type="text" class="form-control" required id="exampleInputName2" name="co2_u">
+        <input type="number" class="form-control" required id="exampleInputName2" name="co2_u">
       </div>
     </div>
     <button type="submit" class="btn btn-primary col-sm-offset-11">添加</button>
@@ -68,6 +68,13 @@
           aria-hidden="true">&times;</span>
         </button>
         <strong>错误。</strong>请检查是否有不合法参数。
+      </div>
+      {% elif status == 4 %}
+      <div class="alert alert-warning" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span>
+        </button>
+        <strong>错误。</strong>此植物名称已被占用。
       </div>
       {% endif %}
     </div>
