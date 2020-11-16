@@ -6,7 +6,6 @@ from django.shortcuts import render
 from .models import info
 from django.forms.models import model_to_dict
 from django.core import serializers
-from django.core.exceptions import ValidationError
 
 # reply == 1，成功；
 # reply == 0，初始值；
@@ -25,6 +24,9 @@ def is_qualified(**word):
         return 1
     else:
         return 0
+
+def login(request):
+    return render(request,"select.html")
 
 def choose(request):
     """选中一个数据用于工作"""

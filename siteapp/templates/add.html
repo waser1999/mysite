@@ -6,47 +6,41 @@
 {% block content %}
 
 <div class="container">
-  <form class="form-horizontal" method="POST">
+  <form method="POST">
     {% csrf_token %}
-    <div class="form-group">
+    <div class="form-group row">
       <label for="exampleInputName2" class="col-sm-2 control-label">起一个名字：</label>
       <div class="col-sm-10">
         <input type="text" name="plant" required class="form-control col-sm-10" id="exampleInputName2">
       </div>
     </div>
-    <div>
-      <span id="helpBlock" class="help-block">温度范围可设置为-50℃~50℃，注意上下界问题。</span>
-    </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label for="exampleInputName2" class="col-sm-2 control-label">温度下限：</label>
       <div class="col-sm-4">
         <input type="number" class="form-control" required id="exampleInputName2" name="temp_b">
+        <small id="passwordHelpBlock" class="form-text text-muted">温度范围可设置为-50℃~50℃，注意上下界问题。</small>
       </div>
       <label for="exampleInputName2" class="col-sm-2 control-label">温度上限：</label>
       <div class="col-sm-4">
         <input type="number" class="form-control" required id="exampleInputName2" name="temp_u">
       </div>
     </div>
-    <div>
-      <span id="helpBlock" class="help-block">湿度范围可设置为0~100%，注意上下界问题。</span>
-    </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label for="exampleInputName2" class="col-sm-2 control-label">湿度下限：</label>
       <div class="col-sm-4">
         <input type="number" class="form-control" required id="exampleInputName2" name="humi_b">
+        <small id="passwordHelpBlock" class="form-text text-muted">湿度范围可设置为0~100%，注意上下界问题。</small>
       </div>
       <label for="exampleInputName2" class="col-sm-2 control-label">湿度上限：</label>
       <div class="col-sm-4">
         <input type="number" class="form-control" required id="exampleInputName2" name="humi_u">
       </div>
     </div>
-    <div>
-      <span id="helpBlock" class="help-block">二氧化碳浓度范围要求大于0，注意上下界问题。</span>
-    </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label for="exampleInputName2" class="col-sm-2 control-label">二氧化碳浓度下限：</label>
       <div class="col-sm-4">
         <input type="number" class="form-control" required id="exampleInputName2" name="co2_b">
+        <small id="passwordHelpBlock" class="form-text text-muted">二氧化碳浓度范围要求大于0，注意上下界问题。</small>
       </div>
       <label for="exampleInputName2" class="col-sm-2 control-label">二氧化碳浓度上限：</label>
       <div class="col-sm-4">
@@ -65,21 +59,20 @@
       {% elif status == 2 %}
       <div class="alert alert-warning" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-          aria-hidden="true">&times;</span>
+            aria-hidden="true">&times;</span>
         </button>
         <strong>错误。</strong>请检查是否有不合法参数。
       </div>
       {% elif status == 4 %}
       <div class="alert alert-warning" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-          aria-hidden="true">&times;</span>
+            aria-hidden="true">&times;</span>
         </button>
         <strong>错误。</strong>此植物名称已被占用。
       </div>
       {% endif %}
     </div>
   </form>
-</div>
 </div>
 
 {% endblock content %}

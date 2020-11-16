@@ -1,28 +1,23 @@
-<nav class="navbar navbar-default navbar-dark">
-    <div class="container-fluid">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-        <a class="navbar-brand" href="#">欢迎。</a>
-      </div>
-      <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-              <!--通过修改<a href="#">修改连接-->
-            <li ><a href="select.html">选择页</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">修改方案<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="add.html">添加方案</a></li>
-                <li><a href="delete.html">删除方案</a></li>
-                <li><a href="update.html">修改方案</a></li>
-              </ul>
-            </li>
-            <li><a href="list.html">所有数据</a></li>
-          </ul>
-      </div>
-    </div>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand" href="#">欢迎。</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div id="navbarSupportedContent" class="collapse navbar-collapse">
+    <ul class="mr-auto navbar-nav">
+      <!--通过修改<a href="#">修改连接-->
+      <li class="nav-item"><a class="nav-link" href="select.html">选择页</a></li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">修改方案<span class="caret"></span></a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="add.html">添加方案</a>
+          <a class="dropdown-item" href="delete.html">删除方案</a>
+          <a class="dropdown-item" href="update.html">修改方案</a>
+        </div>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="list.html">所有数据</a></li>
+    </ul>
+  </div>
 </nav>
