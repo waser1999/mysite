@@ -98,7 +98,8 @@ def modify(request):
     reply = 0
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
-        column = request.POST.get('column','')        #列名
+        #列名
+        column = request.POST.get('column','')
         num = int(request.POST.get('num',''))
 
         reply = 1
