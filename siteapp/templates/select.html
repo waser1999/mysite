@@ -7,10 +7,12 @@
 
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
+  <h1>选择方案</h1>
+  <br>
   <form method="POST">
     {% csrf_token %}
     <div class="form-group row">
-      <label for="exampleInputName2" class="col-sm-3 control-label">选择拟采用的方案名称：</label>
+      <label for="exampleInputName2" class="col-sm-3 col-form-label">选择拟采用的方案名称：</label>
       <div class="col-sm-6">
         <select class="form-control" name="plant">
           {% for plants in rvalue %}
@@ -18,8 +20,8 @@
           {% endfor %}
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">配置</button>
     </div>
+    <button type="submit" class="btn btn-primary">配置</button>
     {% if status %}
     <div>
       <div class="alert alert-success" role="alert">

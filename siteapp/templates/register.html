@@ -1,7 +1,7 @@
 {% extends "baseLogin.html" %}
 {% block content %}
 <div class="container">
-    <h1>登录</h1>
+    <h1>注册</h1>
     <br>
     <form>
         <div class="form-group">
@@ -12,14 +12,11 @@
             <label for="exampleInputPassword1">密码：</label>
             <input type="password" class="form-control" id="exampleInputPassword1">
         </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">记住我</label>
+        <div class="form-group">
+            <label for="exampleInputPassword1">请再确认一次密码：</label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
         </div>
-        <form class="form-incline">
-            <button type="submit" class="btn btn-primary">登录</button>
-            <label for="inputPassword" class="col-form-label col-sm-6">没有账号？你可以<a href="register.html">注册</a>一个。</label>
-        </form>
+        <button type="submit" class="btn btn-primary">注册</button>
     </form>
 </div>
 {% endblock content %}

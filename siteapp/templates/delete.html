@@ -7,19 +7,21 @@
 
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
+  <h1>修改方案</h1>
+  <br>
   <form method="POST">
     {% csrf_token %}
     <div class="form-group row">
-      <label for="exampleInputName2" class="col-sm-3 control-label">选择待删除的方案名称：</label>
-      <div class="col-sm-6">
-        <select class="form-control" name="plant">
+      <label for="plantInput" class="col-sm-3 mb-2 col-form-label">选择待删除的方案名称：</label>
+      <div class="col-sm-6 mb-2">
+        <select class="form-control" id="plantInput" name="plant">
         {% for plants in rvalue %}
           <option value="{{ plants.plant }}">{{ plants.plant }}</option>
         {% endfor %}
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">删除</button>
     </div>
+    <button type="submit" class="btn btn-primary mb-2">删除</button>
     <div>
       {% if status == 1 %}
       <div class="alert alert-success" role="alert">

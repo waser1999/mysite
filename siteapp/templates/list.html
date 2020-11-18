@@ -4,32 +4,34 @@
 
 {% block content %}
 <div class="table-responsive container">
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">植物名称</th>
-            <th scope="col">上限温度</th>
-            <th scope="col">下限温度</th>
-            <th scope="col">上限湿度</th>
-            <th scope="col">下限湿度</th>
-            <th scope="col">上限二氧化碳浓度</th>
-            <th scope="col">下限二氧化碳浓度</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for plants in rvalue %}
-          <tr>
-            <th scope="row">{{ plants.plant }}</th>
-            <td>{{ plants.temp_u }}</td>
-            <td>{{ plants.temp_b }}</td>
-            <td>{{ plants.humi_u }}</td>
-            <td>{{ plants.humi_b }}</td>
-            <td>{{ plants.co2_u }}</td>
-            <td>{{ plants.co2_b }}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+  <h1>所有数据</h1>
+  <br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">植物名称</th>
+        <th scope="col">上限温度</th>
+        <th scope="col">下限温度</th>
+        <th scope="col">上限湿度</th>
+        <th scope="col">下限湿度</th>
+        <th scope="col">上限二氧化碳浓度</th>
+        <th scope="col">下限二氧化碳浓度</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for plants in rvalue %}
+      <tr>
+        <th scope="row">{{ plants.plant }}</th>
+        <td>{{ plants.temp_u }}</td>
+        <td>{{ plants.temp_b }}</td>
+        <td>{{ plants.humi_u }}</td>
+        <td>{{ plants.humi_b }}</td>
+        <td>{{ plants.co2_u }}</td>
+        <td>{{ plants.co2_b }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 {% endblock content %}

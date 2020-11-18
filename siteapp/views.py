@@ -9,6 +9,7 @@ from django.core import serializers
 
 # reply == 1，成功；
 # reply == 0，初始值；
+# reply == -1，登陆错误；
 # reply == 2，范围值不符合规范；
 # reply == 3，删除了已经选择的配置；
 # reply == 4，植物名称重复错误。
@@ -25,8 +26,14 @@ def is_qualified(**word):
     else:
         return 0
 
+def index(request):
+    return render(request,"login.html")
+
 def login(request):
     return render(request,"select.html")
+
+def register(request):
+    return render(request,"register.html")
 
 def choose(request):
     """选中一个数据用于工作"""
