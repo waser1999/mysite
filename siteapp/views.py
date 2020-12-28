@@ -22,8 +22,8 @@ def is_qualified(**word):
     有上下界的词尾b(below)表示下界，u(upper)表示上界
     """
     if -50 <= int(word['temp_b']) < int(word['temp_u']) <= 50 \
-    and 0 <= int(word['humi_b']) < int(word['humi_u']) <= 100 \
-    and 0 <= int(word['co2_b']) < int(word['co2_u']) :
+        and 0 <= int(word['humi_b']) < int(word['humi_u']) <= 100 \
+        and 0 <= int(word['co2_b']) < int(word['co2_u']) :
         return 1
     else:
         return 0
@@ -31,11 +31,15 @@ def is_qualified(**word):
 def index(request):
     """原始界面（登录）函数"""
     if request.method == 'POST':
-        username = request.POST.get('username','')
-        password = request.POST.get('password','')
-        user = authenticate(username = username, password = password)
+        user_detail = request.POST.dict()
+        user = authenticate(request, **user_detail)
         if user is not None:
-            response = {"username" : user.username}
+            login(request, user)
+            rvalue = info.objects.all().order_by("ischecked").reverse()
+            response = {
+                "username" : user.username,
+                "rvalue" : rvalue,
+            }
             return render(request,"select.html",response)
         else:
             response = {"status" : -1}
@@ -44,6 +48,17 @@ def index(request):
 
 def register(request):
     """原始界面（注册）函数"""
+    if request.method == 'POST':
+        newUser = request.POST.dict()
+        if newUser['password1'] != newUser['password2']:
+            response = {"status" : 2}
+        elif User.objects.filter(username = newUser['username']):
+            response = {"status" : 4}
+        else:
+            user = User.objects.create_user(username = newUser['username'], password = newUser['password1'], email = newUser['email'])
+            user.save()
+            response = {"status" : 1}
+        return render(request,"register.html",response)
     return render(request,"register.html")
 
 def choose(request):
