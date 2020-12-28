@@ -1,11 +1,13 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from .models import info
 from django.forms.models import model_to_dict
 from django.core import serializers
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,login
 
 # reply == 1，成功；
 # reply == 0，初始值；
@@ -27,12 +29,21 @@ def is_qualified(**word):
         return 0
 
 def index(request):
+    """原始界面（登录）函数"""
+    if request.method == 'POST':
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
+        user = authenticate(username = username, password = password)
+        if user is not None:
+            response = {"username" : user.username}
+            return render(request,"select.html",response)
+        else:
+            response = {"status" : -1}
+            return render(request,"login.html",response)
     return render(request,"login.html")
 
-def login(request):
-    return render(request,"select.html")
-
 def register(request):
+    """原始界面（注册）函数"""
     return render(request,"register.html")
 
 def choose(request):

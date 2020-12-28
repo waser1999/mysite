@@ -3,23 +3,28 @@
 <div class="container">
     <h1>登录</h1>
     <br>
-    <form>
+    <form method="POST">
+        {% csrf_token %}
         <div class="form-group">
-            <label for="exampleInputEmail1">电子邮箱地址：</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <label for="exampleInputName1">你的用户名：</label>
+            <input type="text" class="form-control" id="exampleInputName1" name="username">
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">密码：</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">记住我</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password">
         </div>
         <form class="form-incline">
             <button type="submit" class="btn btn-primary">登录</button>
             <label for="inputPassword" class="col-form-label col-sm-6">没有账号？你可以<a href="register.html">注册</a>一个。</label>
         </form>
+        {% if status == -1 %}
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert"
+            aria-label="Close"><span aria-hidden="true">&times;</span>
+            </button>
+            登录失败，请检查用户名与密码。
+        </div>
+        {% endif %}
     </form>
 </div>
 {% endblock content %}

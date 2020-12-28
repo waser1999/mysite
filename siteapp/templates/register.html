@@ -3,18 +3,25 @@
 <div class="container">
     <h1>注册</h1>
     <br>
-    <form>
+    <form method="POST">
+        {% csrf_token %}
         <div class="form-group">
-            <label for="exampleInputEmail1">电子邮箱地址：</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <label for="exampleInputName1">你的用户名：</label>
+            <input type="text" class="form-control" id="exampleInputName1" required name="username">
+            <small id="passwordHelpBlock" class="form-text text-muted">用户名是你登陆时的唯一用户名，请务必记住。</small>
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">密码：</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <label for="exampleInputEmail1">电子邮箱地址：</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name="email">
+            <small id="passwordHelpBlock" class="form-text text-muted">电子邮箱用于发送相关提示信息。</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1" >密码：</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" required name="password1">
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">请再确认一次密码：</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <input type="password" class="form-control" id="exampleInputPassword1" required name="password2">
         </div>
         <button type="submit" class="btn btn-primary">注册</button>
     </form>
