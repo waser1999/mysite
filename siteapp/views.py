@@ -2,12 +2,13 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import info
 from django.forms.models import model_to_dict
 from django.core import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
+from django.contrib.auth.decorators import login_required, permission_required
 
 # reply == 1，成功；
 # reply == 0，初始值；
@@ -35,12 +36,7 @@ def index(request):
         user = authenticate(request, **user_detail)
         if user is not None:
             login(request, user)
-            rvalue = info.objects.all().order_by("ischecked").reverse()
-            response = {
-                "username" : user.username,
-                "rvalue" : rvalue,
-            }
-            return render(request,"select.html",response)
+            return redirect('select')
         else:
             response = {"status" : -1}
             return render(request,"login.html",response)
@@ -61,9 +57,9 @@ def register(request):
         return render(request,"register.html",response)
     return render(request,"register.html")
 
+@login_required(login_url='login.html')
 def choose(request):
     """选中一个数据用于工作"""
-    rvalue = info.objects.all().order_by("ischecked").reverse()
     reply = 0
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
@@ -71,7 +67,7 @@ def choose(request):
         info.objects.all().update(ischecked = 0)
         info.objects.filter(plant = plantName).update(ischecked = 1)
         reply = 1
-    
+    rvalue = info.objects.all().order_by("ischecked").reverse()
     response = {
         'rvalue': rvalue,
         'status': reply,
@@ -80,6 +76,8 @@ def choose(request):
 
 def add(request):
     """添加一个数据"""
+    if not request.user.is_superuser:
+        return redirect('select')
     reply = 0
     if request.method == 'POST':
         # 读取设定数据 
@@ -103,6 +101,8 @@ def add(request):
 
 def delete(request):
     """删除数据"""
+    if not request.user.is_superuser:
+        return redirect('select')
     rvalue = info.objects.all()
     reply = 0
     if request.method == 'POST':
@@ -120,6 +120,8 @@ def delete(request):
 
 def modify(request):
     """更新数据"""
+    if not request.user.is_superuser:
+        return redirect('select')
     rvalue = info.objects.all()
     reply = 0
     if request.method == 'POST':
@@ -142,7 +144,8 @@ def modify(request):
         'status': reply,
     }
     return render(request,"update.html",response)
- 
+
+@login_required(login_url='login.html')
 def clist(request):
     """全部列出"""
     # ischecked选中在上的置顶，排序
