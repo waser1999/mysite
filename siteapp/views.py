@@ -3,12 +3,14 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
-from .models import info
+from .models import info, userInfo
 from django.forms.models import model_to_dict
 from django.core import serializers
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Model
+from django.views.decorators.http import require_http_methods
 
 # reply == 1，成功；
 # reply == 0，初始值；
@@ -32,6 +34,8 @@ def is_qualified(**word):
 def index(request):
     """原始界面（登录）函数"""
     if request.method == 'POST':
+        if request.user.is_authenticated:
+            logout(request)
         user_detail = request.POST.dict()
         user = authenticate(request, **user_detail)
         if user is not None:
@@ -43,7 +47,7 @@ def index(request):
     return render(request,"login.html")
 
 def register(request):
-    """原始界面（注册）函数"""
+    """原始界面（注册）函数，尚未完工，还需加入注册时对用户机创新表"""
     if request.method == 'POST':
         newUser = request.POST.dict()
         if newUser['password1'] != newUser['password2']:
@@ -61,19 +65,25 @@ def register(request):
 def choose(request):
     """选中一个数据用于工作"""
     reply = 0
+    
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
-        # 修改选中标记
-        info.objects.all().update(ischecked = 0)
-        info.objects.filter(plant = plantName).update(ischecked = 1)
+        try:
+            userInfo.objects.get(user = request.user.username)
+        except:
+            newInfo = userInfo(user = request.user.username, plant = plantName) 
+            newInfo.save()
+        else:
+            userInfo.objects.filter(user = request.user.username).update(plant = plantName)
         reply = 1
-    rvalue = info.objects.all().order_by("ischecked").reverse()
+    rvalue = info.objects.all()
     response = {
         'rvalue': rvalue,
         'status': reply,
     }
     return render(request,"select.html",response)
 
+@login_required(login_url='login.html')
 def add(request):
     """添加一个数据"""
     if not request.user.is_superuser:
@@ -83,7 +93,6 @@ def add(request):
         # 读取设定数据 
         try:
             new_plan = request.POST.dict()
-            new_plan['ischecked'] = 0
             del new_plan['csrfmiddlewaretoken']
             for k,v in new_plan.items():
                 if k != 'plant':
@@ -99,6 +108,7 @@ def add(request):
     response = { "status": reply }
     return render(request,"add.html",response)
 
+@login_required(login_url='login.html')
 def delete(request):
     """删除数据"""
     if not request.user.is_superuser:
@@ -107,7 +117,9 @@ def delete(request):
     reply = 0
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
-        if info.objects.filter(plant = plantName).get().ischecked == 0:
+        try:
+            userInfo.objects.get(plant = plantName)
+        except Model.DoesNotExist:
             info.objects.filter(plant = plantName).delete()
             reply = 1
         else:
@@ -118,6 +130,7 @@ def delete(request):
     }
     return render(request,"delete.html",response)
 
+@login_required(login_url='login.html')
 def modify(request):
     """更新数据"""
     if not request.user.is_superuser:
@@ -148,15 +161,18 @@ def modify(request):
 @login_required(login_url='login.html')
 def clist(request):
     """全部列出"""
-    # ischecked选中在上的置顶，排序
-    rvalue = info.objects.all().order_by("ischecked").reverse()
+    rvalue = info.objects.all()
     response = {'rvalue': rvalue}
     return render(request,"list.html", response)
 
+@require_http_methods("POST")
 def api(request):
     """api函数实现"""
-    rvalue = info.objects.filter(ischecked = 1)
+    userName = request.POST.get('userName','')
+    userPlant = userInfo.objects.filter(user = userName).values().get()['plant']
+    rvalue = info.objects.filter(plant = userPlant)
     response = {
+        'user': userName,
         'value' : serializers.serialize("json",rvalue),
     }
     return JsonResponse(response)

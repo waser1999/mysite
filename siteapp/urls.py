@@ -11,5 +11,5 @@ urlpatterns = [
     path('add.html',views.add,name='add'),
     path('delete.html',views.delete,name='delete'),
     path('update.html',views.modify,name='modify'),
-    path('jsonAPI',views.api,name='api'),
+    path('api',views.api,name='api'),
 ]
