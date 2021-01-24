@@ -4,15 +4,18 @@ from django.contrib.auth.models import User
 # Create your models here.
 class info(models.Model):
     plant = models.CharField(max_length = 50, primary_key = True)
-    temp_u = models.IntegerField()
-    temp_b = models.IntegerField()
-    humi_u = models.IntegerField()
-    humi_b = models.IntegerField()
-    co2_u = models.IntegerField()
-    co2_b = models.IntegerField()
-    # light_u = models.IntegerField()
-    # light_b = models.IntegerField()
+    temp_u = models.DecimalField(default=25.0, max_digits=3, decimal_places=1)      # 温度
+    temp_b = models.DecimalField(default=20.0, max_digits=3, decimal_places=1)
+    humi_u = models.DecimalField(default=90.0, max_digits=3, decimal_places=1)      # 湿度
+    humi_b = models.DecimalField(default=50.0, max_digits=3, decimal_places=1)
+    co2_u = models.IntegerField(default=1000)                       # 二氧化碳
+    co2_b = models.IntegerField(default=0)
+    light_u = models.IntegerField(default=500)                     # 光照
+    light_b = models.IntegerField(default=10)
+    fei_u = models.DecimalField(default=1.0, max_digits=3, decimal_places=1)       # 水肥浓度
+    fei_b = models.DecimalField(default=0, max_digits=3, decimal_places=1)
 
 class userInfo(models.Model):
     user = models.CharField(max_length = 50, primary_key = True)
-    plant = models.CharField(max_length = 50)
+    plant = models.CharField(max_length = 50)           # 用户选择的植物
+    status = models.BooleanField(default=False)         # 用户机器开关状态
