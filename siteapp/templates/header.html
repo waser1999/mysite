@@ -1,7 +1,7 @@
 {% block header %}
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" href="#">欢迎。</a>
+  <a class="navbar-brand" href="#">欢迎，{{ user.username }}。</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,8 @@
   <div id="navbarSupportedContent" class="collapse navbar-collapse">
     <ul class="mr-auto navbar-nav">
       <!--通过修改<a href="#">修改连接-->
-      <li class="nav-item"><a class="nav-link" href="select.html">选择页</a></li>
+      <li class="nav-item"><a class="nav-link" href="status.html">当前状态</a></li>
+      <li class="nav-item"><a class="nav-link" href="select.html">选择</a></li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">修改方案（管理员）<span class="caret"></span></a>
@@ -20,7 +21,7 @@
         </div>
       </li>
       <li class="nav-item"><a class="nav-link" href="list.html">方案一览表</a></li>
-      <li class="nav-item"><a class="nav-link" href="list.html">状态信息表</a></li>
+      <li class="nav-item"><a class="nav-link" href="info.html">用户信息修改</a></li>
     </ul>
   </div>
 </nav>

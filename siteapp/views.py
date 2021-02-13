@@ -172,9 +172,38 @@ def clist(request):
     response = {'rvalue': rvalue}
     return render(request,"list.html", response)
 
+@login_required(login_url='login.html')
+def cinfo(request):
+    """用户信息修改"""
+    if request.method == 'POST':
+        option = request.POST.get('inlineRadioOptions',)
+        u = request.user
+        # 修改电子邮箱地址
+        if option == "option1":
+            email = request.POST.get('email',)
+            u.email = email
+            u.save()
+            response = {"status" : 1}
+        # 修改密码
+        elif option == "option2":
+            password1 = request.POST.get('password1',)
+            password2 = request.POST.get('password2',)
+            if password1 != password2:
+                response = {"status" : 2}
+            else:
+                u.set_password(password1)
+                u.save()
+                response = {"status" : 1}
+        return render(request,"info.html",response)
+    return render(request,"info.html")
+
+@login_required(login_url='login.html')
+def status(request):
+    return render(request,"status.html")
+
 @require_http_methods("POST")
 def api(request):
-    """api函数实现"""
+    """api函数实现，需加入用户验证"""
     userName = request.POST.get('userName','')
     userInfo.objects.filter(user = userName).update(status = True)
     userPlant = userInfo.objects.filter(user = userName).values().get()['plant']
@@ -184,3 +213,8 @@ def api(request):
         'value' : serializers.serialize("json",rvalue),
     }
     return JsonResponse(response)
+
+@require_http_methods("POST")
+def sendApi(request):
+    """发送数据包"""
+    pass
