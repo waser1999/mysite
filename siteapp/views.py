@@ -203,15 +203,20 @@ def status(request):
 
 @require_http_methods("POST")
 def api(request):
-    """api函数实现，需加入用户验证"""
-    userName = request.POST.get('userName','')
-    userInfo.objects.filter(user = userName).update(status = True)
-    userPlant = userInfo.objects.filter(user = userName).values().get()['plant']
-    rvalue = info.objects.filter(plant = userPlant)
-    response = {
-        'user': userName,
-        'value' : serializers.serialize("json",rvalue),
-    }
+    """api函数实现"""
+    username = request.POST.get('username','')
+    password = request.POST.get('password','')
+    user = authenticate(request, username = username, password = password)
+    if user is not None:
+        userInfo.objects.filter(user = username).update(status = True)
+        userPlant = userInfo.objects.filter(user = username).values().get()['plant']
+        rvalue = info.objects.filter(plant = userPlant)
+        response = {
+            'user': username,
+            'value' : serializers.serialize("json",rvalue),
+        }
+    else:
+        response = {"status" : 'Invalid User.'}
     return JsonResponse(response)
 
 @require_http_methods("POST")
