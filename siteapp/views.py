@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
-from .models import info, userInfo
+from .models import info, userInfo, idata
 from django.forms.models import model_to_dict
 from django.core import serializers
 from django.contrib.auth.models import User
@@ -221,5 +221,15 @@ def api(request):
 
 @require_http_methods("POST")
 def sendApi(request):
-    """发送数据包"""
-    pass
+    """发送数据包，并发送消息(未完成）"""
+    username = request.POST.get('username','')
+    password = request.POST.get('password','')
+    user = authenticate(request, username = username, password = password)
+    if user is not None:
+        new_data = request.POST.get('data','')                 # data用字典形式，直接存即可
+        new_data['user'] = username
+        idata.objects.create(**new_data)
+        response = {'status' : 'Success'}
+    else:
+        response = {'status' : 'Invalid User.'}
+    return JsonResponse(response)

@@ -19,3 +19,11 @@ class userInfo(models.Model):
     user = models.CharField(max_length = 50, primary_key = True)
     plant = models.CharField(max_length = 50)           # 用户选择的植物
     status = models.BooleanField(default=False)         # 用户机器开关状态
+
+class idata(models.Model):
+    user = models.CharField(max_length = 50, primary_key = True)
+    temp = models.DecimalField(default=25.0, max_digits=3, decimal_places=1)      # 温度
+    humi = models.DecimalField(default=50.0, max_digits=3, decimal_places=1)      # 湿度
+    co2 = models.IntegerField(default=1000)                       # 二氧化碳
+    light = models.IntegerField(default=500)                     # 光照
+    fei = models.DecimalField(default=0, max_digits=3, decimal_places=1)       # 水肥浓度
