@@ -14,4 +14,5 @@ urlpatterns = [
     path('update.html',views.modify,name='modify'),
     path('info.html',views.cinfo,name='cinfo'),
     path('api',views.api,name='api'),
+    path('sendApi',views.sendApi,name='sendApi')
 ]

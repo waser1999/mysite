@@ -11,6 +11,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Model
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # reply == 1，成功；
 # reply == 0，初始值；
@@ -201,6 +203,7 @@ def cinfo(request):
 def status(request):
     return render(request,"status.html")
 
+@csrf_exempt                                # 去除CSRF保护
 @require_http_methods("POST")
 def api(request):
     """api函数实现"""
@@ -219,6 +222,7 @@ def api(request):
         response = {"status" : 'Invalid User.'}
     return JsonResponse(response)
 
+@csrf_exempt                                # 去除CSRF保护
 @require_http_methods("POST")
 def sendApi(request):
     """发送数据包，并发送消息(未完成）"""
@@ -226,10 +230,13 @@ def sendApi(request):
     password = request.POST.get('password','')
     user = authenticate(request, username = username, password = password)
     if user is not None:
-        new_data = request.POST.get('data','')                 # data用字典形式，直接存即可
-        new_data['user'] = username
-        idata.objects.create(**new_data)
-        response = {'status' : 'Success'}
+        try:
+            new_data = json.loads(request.POST.get('data',''))            # data用字典形式，直接存即可
+            new_data['user'] = str(username)
+            idata.objects.create(**new_data)
+            response = {'status' : 'Success'}
+        except Exception as e:
+            response = {'status' : e}
     else:
         response = {'status' : 'Invalid User.'}
     return JsonResponse(response)
