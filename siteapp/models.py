@@ -18,7 +18,7 @@ class info(models.Model):
 class userInfo(models.Model):
     user = models.CharField(max_length = 50, primary_key = True)
     plant = models.CharField(max_length = 50)           # 用户选择的植物
-    status = models.BooleanField(default=False)         # 用户机器开关状态
+    status = models.BooleanField(default=False)         # 用户机器开关状态(默认关)
 
 class idata(models.Model):
     user = models.CharField(max_length = 50, primary_key = True)

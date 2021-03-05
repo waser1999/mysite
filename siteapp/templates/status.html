@@ -3,5 +3,76 @@
 {% load static %}
 
 {% block content %}
-
+<div class="container">
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label>你好！下面是对你可能有用的信息。</label>
+            {% if status == 0 %}
+            <label>你选择的植物培养方案：{{ plant }}，温度范围{{ temp_b }}℃~{{ temp_u }}℃，湿度范围{{ humi_b }}%~{{ humi_u }}%，二氧化碳浓度范围{{ co2_b }}~{{ co2_u }}，光照强度范围{{ light_b }}~{{ light_u }}，水肥浓度范围{{ fei_b }}%~{{ fei_u }}%。</label>
+            {% else %}
+            <label>你目前尚未选择任何方案。</label>
+            {% endif %}
+            {% if switch == False %}
+            <label>你的机器已处于关机状态。</label>
+            {% endif %}
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="exampleInputName2" class="col-sm-2 col-form-label">选择查询数据：</label>
+            <div class="col-sm-6">
+                <select class="form-control" name="plant">
+                    <option value='temp'>温度</option>
+                    <option value='humi'>湿度</option>
+                    <option value='co2'>二氧化碳浓度</option>
+                    <option value='light'>光照强度</option>
+                    <option value='fei'>水肥浓度</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">查询</button>
+        </div>
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+        <script>
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+    </form>
+</div>
 {% endblock content %}

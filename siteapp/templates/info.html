@@ -9,8 +9,7 @@
     <form method="POST">
         {% csrf_token %}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-            <label class="form-check-label" for="inlineRadio1">修改邮箱地址</label>
+            <h5>修改邮箱地址</h5>
         </div>
         <label>（你目前的邮箱地址是{{ user.email }}）</label>
         <div class="form-group">
@@ -18,15 +17,14 @@
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
         </div>
         <form class="form-incline">
-            <button type="submit" class="btn btn-primary">修改</button>
+            <button type="submit" class="btn btn-primary" name="inlineRadioOptions" value="option1">修改</button>
         </form>
         <br>
     </form>
     <form method="POST">
         {% csrf_token %}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-            <label class="form-check-label" for="inlineRadio2">修改密码</label>
+            <h5>修改密码</h5>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">新密码：</label>
@@ -37,7 +35,7 @@
             <input type="password" class="form-control" id="exampleInputPassword1" name="password2">
         </div>
         <form class="form-incline">
-            <button type="submit" class="btn btn-primary">修改</button>
+            <button type="submit" class="btn btn-primary" name="inlineRadioOptions" value="option2">修改</button>
         </form>
         <div>
             {% if status == 1 %}

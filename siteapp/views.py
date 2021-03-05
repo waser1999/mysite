@@ -44,14 +44,14 @@ def index(request):
         user = authenticate(request, **user_detail)
         if user is not None:
             login(request, user)
-            return redirect('select')
+            return redirect('status')
         else:
             response = {"status" : -1}
             return render(request,"login.html",response)
     return render(request,"login.html")
 
 def register(request):
-    """原始界面（注册）函数，尚未完工，还需加入注册时对用户机创新表"""
+    """原始界面（注册）函数"""
     if request.method == 'POST':
         newUser = request.POST.dict()
         if newUser['password1'] != newUser['password2']:
@@ -201,7 +201,16 @@ def cinfo(request):
 
 @login_required(login_url='login.html')
 def status(request):
-    return render(request,"status.html")
+    u = request.user.username
+    try:
+        uplant = userInfo.objects.filter(user = u).values().get()
+        response = info.objects.filter(plant = uplant["plant"]).values().get()
+        response["status"] = 0
+        response["switch"] = uplant["status"]
+    except:
+        sign = 1
+        response = {"status" : sign}
+    return render(request,"status.html",response)
 
 @csrf_exempt                                # 去除CSRF保护
 @require_http_methods("POST")
