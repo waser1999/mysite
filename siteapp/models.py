@@ -21,9 +21,11 @@ class userInfo(models.Model):
     status = models.BooleanField(default=False)         # 用户机器开关状态(默认关)
 
 class idata(models.Model):
-    user = models.CharField(max_length = 50, primary_key = True)
+    user = models.CharField(max_length = 50)
     temp = models.DecimalField(default=25.0, max_digits=3, decimal_places=1)      # 温度
     humi = models.DecimalField(default=50.0, max_digits=3, decimal_places=1)      # 湿度
-    co2 = models.IntegerField(default=1000)                       # 二氧化碳
-    light = models.IntegerField(default=500)                     # 光照
-    fei = models.DecimalField(default=0, max_digits=3, decimal_places=1)       # 水肥浓度
+    co2 = models.IntegerField(default=1000)                                       # 二氧化碳
+    light = models.IntegerField(default=500)                                    # 光照
+    fei = models.DecimalField(default=0, max_digits=3, decimal_places=1)        # 水肥浓度
+    fei_hint = models.BooleanField(default=False)                               # 施肥提示
+    error_hint = models.IntegerField(default=0)                                 # 机器错误代码
