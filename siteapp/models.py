@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 class info(models.Model):
@@ -22,6 +23,7 @@ class userInfo(models.Model):
 
 class idata(models.Model):
     user = models.CharField(max_length = 50)
+    dateTime = models.DateTimeField(default=datetime.today(), primary_key = True) # 上传时间
     temp = models.DecimalField(default=25.0, max_digits=3, decimal_places=1)      # 温度
     humi = models.DecimalField(default=50.0, max_digits=3, decimal_places=1)      # 湿度
     co2 = models.IntegerField(default=1000)                                       # 二氧化碳

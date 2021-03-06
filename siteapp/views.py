@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Model
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 import json
 
 # reply == 1，成功；
@@ -242,6 +243,7 @@ def sendApi(request):
         try:
             new_data = json.loads(request.POST.get('data',''))            # data用字典形式，直接存即可
             new_data['user'] = str(username)
+            new_data['dateTime'] = datetime.today()
             idata.objects.create(**new_data)
             response = {'status' : 'Success'}
         except Exception as e:
