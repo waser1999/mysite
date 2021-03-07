@@ -7,6 +7,9 @@
 
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
+  {% if switch == False %}
+  <label>你的机器已处于关机状态。</label>
+  {% endif %}
   <h1>选择方案</h1>
   <br>
   <form method="POST">

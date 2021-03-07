@@ -45,7 +45,7 @@ def index(request):
         user = authenticate(request, **user_detail)
         if user is not None:
             login(request, user)
-            return redirect('status')
+            return redirect('select')
         else:
             response = {"status" : -1}
             return render(request,"login.html",response)
@@ -70,7 +70,7 @@ def register(request):
 def choose(request):
     """选中一个数据用于工作"""
     reply = 0
-    
+    work = userInfo.objects.filter(user = request.user.username).values().get()["status"]
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
         try:
@@ -85,6 +85,7 @@ def choose(request):
     response = {
         'rvalue': rvalue,
         'status': reply,
+        'switch': work,
     }
     return render(request,"select.html",response)
 
@@ -208,8 +209,10 @@ def status(request):
         uplant = userInfo.objects.filter(user = u).values().get()
         data = info.objects.filter(plant = uplant["plant"]).values().get()
         plist = idata.objects.filter(user = u).order_by("dateTime")[:30]
-        if request.method == "POST":
-            column = request.POST.get('column','')
+        if request.method == "POST" and request.POST.get('off','') == "on":
+            i = uplant["status"]
+            i = 1 if i == 0 else 0
+            userInfo.objects.filter(user = u).update(status = i)
         response = {
             "status" : sign,
             "switch" : uplant["status"],

@@ -4,47 +4,46 @@
 
 {% block content %}
 <div class="container">
+  <br>
+  <div>
+    <label>你好！下面是对你可能有用的信息。</label><br>
+    {% if status == 0 %}
+    <label>你选择的植物培养方案：{{ data.plant }}，温度范围{{ data.temp_b }}℃~{{ data.temp_u }}℃，湿度范围{{ data.humi_b }}%~{{ data.humi_u }}%，</label>
+    <label>二氧化碳浓度范围{{ data.co2_b }}~{{ data.co2_u }}，光照强度范围{{ data.light_b }}~{{ data.light_u }}，水肥浓度范围{{ data.fei_b }}%~{{ data.fei_u }}%。</label>
+    {% else %}
+    <label>你目前尚未选择任何方案。</label>
+    {% endif %}
     <br>
-    <form method="POST">
-        {% csrf_token %}
-        <div>
-            <label>你好！下面是对你可能有用的信息。</label><br>
-            {% if status == 0 %}
-            <label>你选择的植物培养方案：{{ data.plant }}，温度范围{{ data.temp_b }}℃~{{ data.temp_u }}℃，湿度范围{{ data.humi_b }}%~{{ data.humi_u }}%，</label>
-            <label>二氧化碳浓度范围{{ data.co2_b }}~{{ data.co2_u }}，光照强度范围{{ data.light_b }}~{{ data.light_u }}，水肥浓度范围{{ data.fei_b }}%~{{ data.fei_u }}%。</label>
-            {% else %}
-            <label>你目前尚未选择任何方案。</label>
-            {% endif %}
-            {% if switch == False %}
-            <label>你的机器已处于关机状态。</label>
-            {% endif %}
-        </div>
-        <br>
-        <table class="table">
-            <label>以下向你展示最近的实时监控数据。</label>
-            <thead>
-              <tr>
-                <th scope="col">时间</th>
-                <th scope="col">温度</th>
-                <th scope="col">湿度</th>
-                <th scope="col">二氧化碳浓度</th>
-                <th scope="col">光照强度</th>
-                <th scope="col">水肥浓度</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for p in plist %}
-              <tr>
-                <th scope="row">{{ p.dateTime }}</th>
-                <td>{{ p.temp }}</td>
-                <td>{{ p.humi }}</td>
-                <td>{{ p.co2 }}</td>
-                <td>{{ p.light }}</td>
-                <td>{{ p.fei }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-    </form>
+  </div>
+  <br>
+  <table class="table">
+    <label>以下向你展示最近的实时监控数据。</label>
+    <thead>
+      <tr>
+        <th scope="col">时间</th>
+        <th scope="col">温度</th>
+        <th scope="col">湿度</th>
+        <th scope="col">二氧化碳浓度</th>
+        <th scope="col">光照强度</th>
+        <th scope="col">水肥浓度</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in plist %}
+      <tr>
+        <th scope="row">{{ p.dateTime }}</th>
+        <td>{{ p.temp }}</td>
+        <td>{{ p.humi }}</td>
+        <td>{{ p.co2 }}</td>
+        <td>{{ p.light }}</td>
+        <td>{{ p.fei }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" name="off" value="on">开/关机</button>
+  </form>
 </div>
 {% endblock content %}
