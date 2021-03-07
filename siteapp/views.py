@@ -203,13 +203,21 @@ def cinfo(request):
 @login_required(login_url='login.html')
 def status(request):
     u = request.user.username
+    sign = 0
     try:
         uplant = userInfo.objects.filter(user = u).values().get()
-        response = info.objects.filter(plant = uplant["plant"]).values().get()
-        response["status"] = 0
-        response["switch"] = uplant["status"]
-    except:
-        sign = 1
+        data = info.objects.filter(plant = uplant["plant"]).values().get()
+        plist = idata.objects.filter(user = u).order_by("dateTime")[:30]
+        if request.method == "POST":
+            column = request.POST.get('column','')
+        response = {
+            "status" : sign,
+            "switch" : uplant["status"],
+            "data" : data,
+            "plist" : plist,
+        }
+    except Exception as e:
+        sign = e
         response = {"status" : sign}
     return render(request,"status.html",response)
 
