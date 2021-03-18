@@ -208,7 +208,7 @@ def status(request):
     try:
         uplant = userInfo.objects.filter(user = u).values().get()
         data = info.objects.filter(plant = uplant["plant"]).values().get()
-        plist = idata.objects.filter(user = u).order_by("dateTime")[:30]
+        plist = idata.objects.filter(user = u).order_by("dateTime").reverse()[:30]
         if request.method == "POST" and request.POST.get('off','') == "on":
             i = uplant["status"]
             i = 1 if i == 0 else 0
@@ -232,12 +232,14 @@ def api(request):
     password = request.POST.get('password','')
     user = authenticate(request, username = username, password = password)
     if user is not None:
-        userInfo.objects.filter(user = username).update(status = True)
-        userPlant = userInfo.objects.filter(user = username).values().get()['plant']
+        u = userInfo.objects.filter(user = username).values()
+        userPlant = u.get()['plant']
+        switch = u.get()['status']
         rvalue = info.objects.filter(plant = userPlant)
         response = {
             'user': username,
             'value' : serializers.serialize("json",rvalue),
+            'status' : switch,
         }
     else:
         response = {"status" : 'Invalid User.'}
