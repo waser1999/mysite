@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Model
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
 from datetime import datetime
 import json
 
@@ -254,11 +255,33 @@ def sendApi(request):
     user = authenticate(request, username = username, password = password)
     if user is not None:
         try:
-            new_data = json.loads(request.POST.get('data',''))            # data用字典形式，直接存即可
+            u = userInfo.objects.filter(user = username).values().get()
+            plant_data = info.objects.filter(plant = u['plant']).values().get()
+            # data用字典形式，直接存即可
+            new_data = json.loads(request.POST.get('data',''))
             new_data['user'] = str(username)
             new_data['dateTime'] = datetime.today()
             idata.objects.create(**new_data)
-            response = {'status' : 'Success'}
+
+            s = ""
+            if new_data['temp'] > plant_data['temp_u'] + 20:
+                s += "你的设备出现异常高温，建议查看你的数据仪表板。\n"
+            if new_data['fei'] < plant_data['fei_b']:
+                s += "植物生长所需的营养液不足，建议尽快添加。\n"
+            if new_data['error_hint'] != u['error_s']:
+                if new_data['error_hint'] != "0":
+                    s += "机器报错，错误信息：" + new_data['error_hint'] + "\n"
+                userInfo.objects.filter(user = username).update(error_s = new_data['error_hint'])
+            if s != "":
+                send_mail(
+                    '你的机器发生了一些情况',
+                    s,
+                    'no_reply@microplants.com',
+                    [user.email],
+                    fail_silently=False,
+                )
+            
+            response = {'status' : 'Success', 's': s, 'email': user.email }
         except Exception as e:
             response = {'status' : e}
     else:
