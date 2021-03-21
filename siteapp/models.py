@@ -20,6 +20,8 @@ class userInfo(models.Model):
     user = models.CharField(max_length = 50, primary_key = True)
     plant = models.CharField(max_length = 50)           # 用户选择的植物
     status = models.BooleanField(default=False)         # 用户机器开关状态(默认关)
+    temp_h = models.BooleanField(default=False)         # 温度报警置位
+    fei_h = models.BooleanField(default=False)          # 水肥添加置位
     error_s = models.CharField(default=0, max_length = 50)            # 机器错误状态（0为正常）
 
 class idata(models.Model):

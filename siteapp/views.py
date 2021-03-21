@@ -264,10 +264,18 @@ def sendApi(request):
             idata.objects.create(**new_data)
 
             s = ""
-            if new_data['temp'] > plant_data['temp_u'] + 20:
+            if new_data['temp'] > plant_data['temp_u'] + 20 and u['temp_h'] == False:
                 s += "你的设备出现异常高温，建议查看你的数据仪表板。\n"
-            if new_data['fei'] < plant_data['fei_b']:
+                userInfo.objects.filter(user = username).update(temp_h = True)
+            elif new_data['temp'] < plant_data['temp_u'] + 20 and u['temp_h'] == True:
+                userInfo.objects.filter(user = username).update(temp_h = False)
+            
+            if new_data['fei'] < plant_data['fei_b'] and u['fei_h'] == False:
                 s += "植物生长所需的营养液不足，建议尽快添加。\n"
+                userInfo.objects.filter(user = username).update(fei_h = True)
+            elif new_data['fei'] > plant_data['fei_b'] and u['fei_h'] == True:
+                userInfo.objects.filter(user = username).update(fei_h = False)
+            
             if new_data['error_hint'] != u['error_s']:
                 if new_data['error_hint'] != "0":
                     s += "机器报错，错误信息：" + new_data['error_hint'] + "\n"
@@ -281,7 +289,7 @@ def sendApi(request):
                     fail_silently=False,
                 )
             
-            response = {'status' : 'Success', 's': s, 'email': user.email }
+            response = {'status' : 'Success', 's': s}
         except Exception as e:
             response = {'status' : e}
     else:
