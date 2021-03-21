@@ -15,6 +15,10 @@
     {% endif %}
     <br>
   </div>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" name="off" value="on">开/关机</button>
+  </form>
   <br>
   <table class="table">
     <label>以下向你展示最近的实时监控数据。</label>
@@ -41,9 +45,5 @@
       {% endfor %}
     </tbody>
   </table>
-  <form method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary" name="off" value="on">开/关机</button>
-  </form>
 </div>
 {% endblock content %}

@@ -249,7 +249,7 @@ def api(request):
 @csrf_exempt                                # 去除CSRF保护
 @require_http_methods("POST")
 def sendApi(request):
-    """发送数据包，并发送消息(未完成）"""
+    """发送数据包，并发送消息"""
     username = request.POST.get('username','')
     password = request.POST.get('password','')
     user = authenticate(request, username = username, password = password)
@@ -276,7 +276,7 @@ def sendApi(request):
                 send_mail(
                     '你的机器发生了一些情况',
                     s,
-                    'no_reply@microplants.com',
+                    '2780925747@qq.com',
                     [user.email],
                     fail_silently=False,
                 )
