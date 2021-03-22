@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    {% if not user.is_superuser %}
+    <h1>你现在不是管理员，请联系管理员处理。</h1>
+    {% else %}
+    <label>转到<a href="admin/auth/user/">权限配置页</a>.</label>
+    {% endif %}
+</div>
+{% endblock content %}

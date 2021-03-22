@@ -71,7 +71,10 @@ def register(request):
 def choose(request):
     """选中一个数据用于工作"""
     reply = 0
-    work = userInfo.objects.filter(user = request.user.username).values().get()["status"]
+    try:
+        work = userInfo.objects.filter(user = request.user.username).values().get()["status"]
+    except:
+        work = -1
     if request.method == 'POST':
         plantName = request.POST.get('plant','')
         try:
@@ -94,7 +97,7 @@ def choose(request):
 def add(request):
     """添加一个数据"""
     if not request.user.is_superuser:
-        return redirect('select')
+        return redirect('admin')
     reply = 0
     if request.method == 'POST':
         # 读取设定数据 
@@ -121,7 +124,7 @@ def add(request):
 def delete(request):
     """删除数据"""
     if not request.user.is_superuser:
-        return redirect('select')
+        return redirect('admin')
     rvalue = info.objects.all()
     reply = 0
     if request.method == 'POST':
@@ -143,7 +146,7 @@ def delete(request):
 def modify(request):
     """更新数据"""
     if not request.user.is_superuser:
-        return redirect('select')
+        return redirect('admin')
     rvalue = info.objects.all()
     reply = 0
     if request.method == 'POST':
@@ -169,6 +172,10 @@ def modify(request):
         'status': reply,
     }
     return render(request,"update.html",response)
+
+@login_required(login_url='login.html')
+def admin(request):
+    return render(request,"admin.html")
 
 @login_required(login_url='login.html')
 def clist(request):

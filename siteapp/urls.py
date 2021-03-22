@@ -12,6 +12,7 @@ urlpatterns = [
     path('add.html',views.add,name='add'),
     path('delete.html',views.delete,name='delete'),
     path('update.html',views.modify,name='modify'),
+    path('admin.html',views.admin,name='admin'),
     path('info.html',views.cinfo,name='cinfo'),
     path('api',views.api,name='api'),
     path('sendApi',views.sendApi,name='sendApi')
