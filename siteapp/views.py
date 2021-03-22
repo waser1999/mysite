@@ -285,7 +285,7 @@ def sendApi(request):
             
             if new_data['error_hint'] != u['error_s']:
                 if new_data['error_hint'] != "0":
-                    s += "机器报错，错误信息：" + new_data['error_hint'] + "\n"
+                    s += "你的机器给你发送了相关信息：" + new_data['error_hint'] + "\n"
                 userInfo.objects.filter(user = username).update(error_s = new_data['error_hint'])
             if s != "":
                 send_mail(
