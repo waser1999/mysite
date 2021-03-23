@@ -13,7 +13,7 @@ from django.db.models import Model
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
-from datetime import datetime
+from django.utils import timezone
 import json
 
 # reply == 1，成功；
@@ -268,7 +268,7 @@ def sendApi(request):
             # data用字典形式，直接存即可
             new_data = json.loads(request.POST.get('data',''))
             new_data['user'] = str(username)
-            new_data['dateTime'] = datetime.today()
+            new_data['dateTime'] = timezone.now()
             idata.objects.create(**new_data)
 
             image_url = str(request.POST.get('url',''))
