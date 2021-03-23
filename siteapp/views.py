@@ -226,6 +226,7 @@ def status(request):
             "switch" : uplant["status"],
             "data" : data,
             "plist" : plist,
+            "image_url" : uplant["url_address"], 
         }
     except Exception as e:
         sign = e
@@ -269,6 +270,9 @@ def sendApi(request):
             new_data['user'] = str(username)
             new_data['dateTime'] = datetime.today()
             idata.objects.create(**new_data)
+
+            image_url = str(request.POST.get('url',''))
+            userInfo.objects.filter(user = username).update(url_address = image_url)
 
             s = ""
             if new_data['temp'] > plant_data['temp_u'] + 20 and u['temp_h'] == False:

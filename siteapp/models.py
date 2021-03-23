@@ -23,6 +23,7 @@ class userInfo(models.Model):
     temp_h = models.BooleanField(default=False)         # 温度报警置位
     fei_h = models.BooleanField(default=False)          # 水肥添加置位
     error_s = models.CharField(default=0, max_length = 50)            # 机器错误状态（0为正常）
+    url_address = models.CharField(blank = True, null = True, max_length = 150)
 
 class idata(models.Model):
     user = models.CharField(max_length = 50)
