@@ -239,12 +239,16 @@ def api(request):
     """api函数实现"""
     username = request.POST.get('username','')
     password = request.POST.get('password','')
+    species = request.POST.get('species','')
     user = authenticate(request, username = username, password = password)
     if user is not None:
         u = userInfo.objects.filter(user = username).values()
         userPlant = u.get()['plant']
         switch = u.get()['status']
-        rvalue = info.objects.filter(plant = userPlant)
+        if species == "":
+            rvalue = info.objects.filter(plant = userPlant)
+        else:
+            rvalue = info.objects.filter(plant = species)
         response = {
             'user': username,
             'value' : serializers.serialize("json",rvalue),
